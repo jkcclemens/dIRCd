@@ -82,12 +82,19 @@ public class IRC {
         return this.users;
     }
 
+    public User getUser(string name) {
+        name = name.strip(); // bad clients are bad
+        // do regex check here later
+        foreach (User u; users) if (u.getNick() == name) return u;
+        return null;
+    }
+
     public Channel[] getChannels() {
         return this.channels.values;
     }
 
     public Channel getChannel(string name) {
-        name = name.strip();
+        name = name.strip(); // bad clients are bad
         auto match = name.match(chanRegex);
         if (!match) return null;
         if (name.toLower() in channels) return channels[name.toLower()];

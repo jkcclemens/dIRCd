@@ -152,6 +152,10 @@ public class User {
         }
     }
 
+    public void sendMessage(User who, string message) {
+        sendLine(":" ~ who.getHostmask() ~ " PRIVMSG " ~ this.getNick() ~ " :" ~ message);
+    }
+
     public void disconnect(string reason) {
         if (!connected) return;
         foreach (Channel c; this.getChannels()) {
