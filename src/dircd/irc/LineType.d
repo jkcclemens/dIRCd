@@ -183,7 +183,7 @@ public enum LineType : int {
     ErrNeedMoreParams   = 461,                  // <command> :Not enough parameters
     ErrAlreadyRegistered= 462,                  // :You may not reregister
     ErrNoPermForHost    = 463,
-    ErrPasswdMismatch  = 464,
+    ErrPasswdMismatch   = 464,
     ErrYoureBannedCreep = 465,
     ErrYouWillBeBanned  = 466,
     ErrKeySet           = 467,                  // <channel> :Channel key already set
