@@ -167,7 +167,7 @@ public enum LineType : int {
     ErrNoAdminInfo      = 423,                  // <server> :No administrative info available
     ErrFileError        = 424,
     ErrNoNicknameGiven  = 431,                  // :No nickname given
-    ErrErroneusNickname = 432,                  // <nickname> :Erroneus Nickname
+    ErrErroneousNickname= 432,                  // <nickname> :Erroneus Nickname
     ErrNickNameInUse    = 433,                  // <nickname> :Nickname is already in use.
     ErrNickCollision    = 436,                  // <nickname> :Nickname collision KILL
     ErrUnAvailResource  = 437,                  // <channel> :Cannot change nickname while banned on channel

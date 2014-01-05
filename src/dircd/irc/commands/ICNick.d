@@ -17,7 +17,7 @@ public class ICNick : ICommand {
     public void run(User u, Captures!(string, ulong) line) {
         auto newNick = line["params"];
         if (newNick.match(nickRegex)) {
-            u.sendLine(u.getIRC().generateLine(u, LineType.ErrErroneusNickname, newNick ~ " :Erroneous nickname"));
+            u.sendLine(u.getIRC().generateLine(u, LineType.ErrErroneousNickname, newNick ~ " :Erroneous nickname"));
             return;
         }
         foreach (User user; u.getIRC().getUsers()) {
