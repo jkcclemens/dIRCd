@@ -123,6 +123,7 @@ public class User {
     }
 
     public void setUser(string user) {
+        if (user.length > 9) user = user[0..9];
         this.user = user;
     }
 
