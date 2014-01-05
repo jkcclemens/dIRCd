@@ -102,7 +102,7 @@ public class IRC {
         auto match = name.match(chanRegex);
         if (!match) return null;
         if (name.toLower() in channels) return channels[name.toLower()];
-        auto chan = new Channel(name);
+        auto chan = new Channel(this, name);
         channels[name.toLower()] = chan;
         return chan;
     }
@@ -130,6 +130,12 @@ public class IRC {
         }
         if (index == -1) return;
         users = users.remove(index);
+    }
+
+    public void removeChannel(Channel c) {
+        auto name = c.getName().toLower();
+        if (name !in channels) return;
+        channels.remove(name);
     }
 
     public void addUser(User u) {

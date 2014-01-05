@@ -1,11 +1,14 @@
 module dircd.irc.Channel;
 
+import dircd.irc.IRC;
 import dircd.irc.modes.ChanMode;
 import dircd.irc.User;
 
 import std.algorithm: countUntil, remove;
 
 public class Channel {
+
+    private IRC irc;
 
     private string name; // name of chan
     private User[] users; // users in chan
@@ -15,7 +18,8 @@ public class Channel {
     private ChanMode[] modes = [ChanMode.NoOutsideMessages, ChanMode.TopicOpOnly];
     private string[int] modeParams;
 
-    public this(string name) {
+    public this(IRC irc, string name) {
+        this.irc = irc;
         this.name = name;
     }
 
@@ -108,6 +112,7 @@ public class Channel {
         }
         if (index == -1) return;
         users = users.remove(index);
+        if (users.length < 1) this.irc.removeChannel(this);
     }
 
 }
