@@ -49,6 +49,7 @@ public class IRC {
     }
 
     private void addCommands() {
+        ch.addCommand(new ICIson());
         ch.addCommand(new ICJoin());
         ch.addCommand(new ICNames());
         ch.addCommand(new ICNick());

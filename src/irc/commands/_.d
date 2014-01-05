@@ -1,6 +1,7 @@
 module org.royaldev.dircd.irc.commands._;
 
 public import org.royaldev.dircd.irc.commands.CommandHandler;
+public import org.royaldev.dircd.irc.commands.ICIson;
 public import org.royaldev.dircd.irc.commands.ICJoin;
 public import org.royaldev.dircd.irc.commands.ICNames;
 public import org.royaldev.dircd.irc.commands.ICNick;
