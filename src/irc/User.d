@@ -137,6 +137,7 @@ public class User {
 
                 }
                 line ~= to!string(buff[0..amt]);
+                if (line.length >= 512) return line[0..512]; // RFC - 512 is the maximum length of any line
                 if (line.length > 1 && line[$-1..$] == "\n") return line; // support bad clients
             }
         }
