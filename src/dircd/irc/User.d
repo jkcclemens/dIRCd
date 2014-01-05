@@ -107,7 +107,7 @@ public class User {
     }
 
     public string getHostmask() {
-        return getNick() ~ "!" ~ getUser() ~ "@" ~ this.irc.getHost();
+        return getNick() ~ "!" ~ getUser() ~ "@" ~ this.getHostname();
     }
 
     public string getUser() {
