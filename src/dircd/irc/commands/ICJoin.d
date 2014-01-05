@@ -27,7 +27,8 @@ public class ICJoin : ICommand {
             }
             channel.addUser(u);
             u.addChannel(channel);
-            u.sendLine(u.getIRC().generateLine(LineType.RplTopic, u.getNick() ~ " " ~ channel.getName() ~ " :" ~ channel.getTopic()));
+            if (channel.getTopic() is null) u.sendLine(u.getIRC().generateLine(LineType.RplNoTopic, u.getNick() ~ " " ~ channel.getName() ~ " :No topic is set."));
+            else u.sendLine(u.getIRC().generateLine(LineType.RplTopic, u.getNick() ~ " " ~ channel.getName() ~ " :" ~ channel.getTopic()));
             //u.sendLine(u.getIRC().generateLine(LineType.RplTopicSetBy, ""));
             auto names = u.getIRC().getCommandHandler().getCommand("NAMES");
             if (names !is null) names.run(u, u.getIRC().parseLine("NAMES " ~ channel.getName()));
