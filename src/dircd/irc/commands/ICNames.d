@@ -21,7 +21,7 @@ public class ICNames : ICommand {
         string toSend = u.getNick() ~ " = " ~ channel.getName() ~ " :";
         foreach (User user; channel.getUsers()) toSend ~= user.getNick() ~ " ";
         u.sendLine(u.getIRC().generateLine(LineType.RplNamReply, toSend.strip()));
-        u.sendLine(u.getIRC().generateLine(LineType.RplEndOfNames, user.getNick() ~ " " ~ channel.getName() ~ " :End of /NAMES list"));
+        u.sendLine(u.getIRC().generateLine(LineType.RplEndOfNames, u.getNick() ~ " " ~ channel.getName() ~ " :End of /NAMES list"));
     }
 
 }
