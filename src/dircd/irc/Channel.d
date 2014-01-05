@@ -1,7 +1,8 @@
-module org.royaldev.dircd.irc.Channel;
+module dircd.irc.Channel;
 
 import std.algorithm: countUntil, remove;
-import org.royaldev.dircd.irc.User;
+import dircd.irc.User;
+import dircd.irc.modes.ChanMode;
 
 public class Channel {
 
@@ -10,8 +11,28 @@ public class Channel {
     private string topic; // topic
     private User topicUser; // person who set topic
 
+    private ChanMode[] modes = [ChanMode.NoOutsideMessages, ChanMode.TopicOpOnly];
+
     public this(string name) {
         this.name = name;
+    }
+
+    public ChanMode[] getModes() {
+        return this.modes;
+    }
+
+    public void setModes(ChanMode[] modes) {
+        this.modes = modes;
+    }
+
+    public void sendModes() {
+        foreach (User u; this.getUsers()) sendModes(u);
+    }
+
+    public void sendModes(User u) {
+        string toSend = "+";
+        foreach (ChanMode cm; this.getModes()) toSend ~= cm;
+        u.sendHostLine("MODE " ~ this.getName() ~ " " ~ toSend);
     }
 
     public string getName() {
@@ -43,6 +64,10 @@ public class Channel {
         foreach (User u; users) u.sendLine(line);
     }
 
+    public void sendHostLineAll(string line) {
+        foreach (User u; users) u.sendHostLine(line);
+    }
+
     public void sendLineAllExcept(User except, string line) {
         foreach (User u; users) {
             if (u.getNick() == except.getNick()) continue;
@@ -51,12 +76,18 @@ public class Channel {
     }
 
     public void addUser(User u) {
+        bool isOp = this.users.length < 1; // first user gets op
         this.users ~= u;
         sendLineAll(":" ~ u.getHostmask() ~ " JOIN " ~ getName());
+        if (isOp) {
+            auto modes = this.getModes();
+            // do something
+            this.setModes(modes);
+        }
     }
 
     public void partUser(User u, string message) {
-        sendLineAll(":" ~ u.getHostmask ~ " PART " ~ getName() ~ " :" ~ message);
+        sendLineAll(":" ~ u.getHostmask() ~ " PART " ~ getName() ~ " :" ~ message);
         removeUser(u);
     }
 

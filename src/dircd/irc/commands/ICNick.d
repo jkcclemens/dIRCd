@@ -1,10 +1,10 @@
-module org.royaldev.dircd.irc.commands.ICNick;
+module dircd.irc.commands.ICNick;
 
 import std.regex: Regex, regex;
 
-import org.royaldev.dircd.irc.User;
-import org.royaldev.dircd.irc.LineType;
-import org.royaldev.dircd.irc.commands.ICommand;
+import dircd.irc.User;
+import dircd.irc.LineType;
+import dircd.irc.commands.ICommand;
 
 public class ICNick : ICommand {
 

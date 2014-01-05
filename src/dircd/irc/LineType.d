@@ -1,4 +1,4 @@
-module org.royaldev.dircd.irc.LineType;
+module dircd.irc.LineType;
 
 public enum LineType : int {
     RplNone             = 300,

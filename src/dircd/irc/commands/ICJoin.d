@@ -1,9 +1,9 @@
-module org.royaldev.dircd.irc.commands.ICJoin;
+module dircd.irc.commands.ICJoin;
 
-import org.royaldev.dircd.irc.User;
-import org.royaldev.dircd.irc.Channel;
-import org.royaldev.dircd.irc.LineType;
-import org.royaldev.dircd.irc.commands.ICommand;
+import dircd.irc.User;
+import dircd.irc.Channel;
+import dircd.irc.LineType;
+import dircd.irc.commands.ICommand;
 
 public class ICJoin : ICommand {
 

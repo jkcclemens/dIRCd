@@ -1,7 +1,7 @@
-module org.royaldev.dircd.irc.commands.CommandHandler;
+module dircd.irc.commands.CommandHandler;
 
 import std.string: toLower;
-import org.royaldev.dircd.irc.commands.ICommand;
+import dircd.irc.commands.ICommand;
 
 public class CommandHandler {
 

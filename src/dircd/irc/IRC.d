@@ -1,4 +1,4 @@
-module org.royaldev.dircd.irc.IRC;
+module dircd.irc.IRC;
 
 import std.c.stdlib: exit;
 import std.regex: regex, Regex, match, rreplace = replace, Captures;
@@ -6,13 +6,13 @@ import std.socket: Socket, SocketException, SocketType, AddressFamily, InternetA
 import std.stdio: writeln;
 import std.utf: UTFException, toUTF8;
 import std.conv: to;
-import std.algorithm: remove;
+import std.algorithm: remove, startsWith;
 import std.string: format, toLower, strip;
 import core.thread: Thread;
-import org.royaldev.dircd.irc.LineType;
-import org.royaldev.dircd.irc.User;
-import org.royaldev.dircd.irc.Channel;
-import org.royaldev.dircd.irc.commands._;
+import dircd.irc.LineType;
+import dircd.irc.User;
+import dircd.irc.Channel;
+import dircd.irc.commands._;
 
 public class IRC {
     private Socket s;
@@ -51,6 +51,7 @@ public class IRC {
     private void addCommands() {
         ch.addCommand(new ICIson());
         ch.addCommand(new ICJoin());
+        ch.addCommand(new ICMode());
         ch.addCommand(new ICNames());
         ch.addCommand(new ICNick());
         ch.addCommand(new ICPart());
@@ -105,6 +106,10 @@ public class IRC {
 
     public string generateLine(LineType lt, string params) {
         return format(":%s %03d %s", getHost(), lt, params);
+    }
+
+    public bool startsWithChannelPrefix(string s) {
+        return s.startsWith("#") || s.startsWith("!") || s.startsWith("+") || s.startsWith("&");
     }
 
     public Captures!(string, ulong) parseLine(string line) {

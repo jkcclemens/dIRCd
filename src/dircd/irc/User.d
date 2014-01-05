@@ -1,13 +1,14 @@
-module org.royaldev.dircd.irc.User;
+module dircd.irc.User;
 
 import std.socket: Socket;
 import std.algorithm: remove;
 import std.regex: regex, rreplace = replace, match;
 import std.string: split, toUpper, strip, format;
 import std.conv: to;
-import org.royaldev.dircd.irc.LineType;
-import org.royaldev.dircd.irc.IRC;
-import org.royaldev.dircd.irc.Channel;
+import dircd.irc.LineType;
+import dircd.irc.IRC;
+import dircd.irc.Channel;
+import dircd.irc.modes.UserMode;
 import core.time: dur;
 import std.stdio: writeln;
 import std.datetime: Clock;
@@ -24,6 +25,8 @@ public class User {
     private string user;
     private string hostname;
 
+    private UserMode[] modes;
+
     private const long connTime;
     private long lastPing = 0L;
     private long lastPong = 0L;
@@ -37,6 +40,24 @@ public class User {
         this.connTime = Clock.currTime().toUnixTime();
         this.connected = true;
         this.correctPass = false;
+    }
+
+    public UserMode[] getModes() {
+        return this.modes;
+    }
+
+    public void setModes(UserMode[] modes) {
+        this.modes = modes;
+    }
+
+    public void sendModes() {
+        sendModes(this);
+    }
+
+    public void sendModes(User u) {
+        string toSend = "+";
+        foreach (UserMode um; this.getModes()) toSend ~= um;
+        u.sendHostLine("MODE " ~ this.getNick() ~ " " ~ toSend);
     }
 
     public bool isConnected() {
@@ -150,6 +171,10 @@ public class User {
             writeln("SENT ", this.getHostmask(), ": ", line);
             send(line ~ "\r\n");
         }
+    }
+
+    public void sendHostLine(string line) {
+        sendLine(":" ~ this.getIRC().getHost() ~ " " ~ line);
     }
 
     public void sendMessage(User who, string message) {

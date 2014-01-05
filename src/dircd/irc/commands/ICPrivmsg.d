@@ -1,10 +1,8 @@
-module org.royaldev.dircd.irc.commands.ICPrivmsg;
+module dircd.irc.commands.ICPrivmsg;
 
-import std.algorithm: startsWith;
-
-import org.royaldev.dircd.irc.User;
-import org.royaldev.dircd.irc.LineType;
-import org.royaldev.dircd.irc.commands.ICommand;
+import dircd.irc.User;
+import dircd.irc.LineType;
+import dircd.irc.commands.ICommand;
 
 public class ICPrivmsg : ICommand {
 
@@ -18,7 +16,7 @@ public class ICPrivmsg : ICommand {
             u.sendLine(u.getIRC().generateLine(LineType.ErrNeedMoreParams, "PRIVMSG :Need more parameters"));
             return;
         }
-        if (target.startsWith("#") || target.startsWith("!") || target.startsWith("+") || target.startsWith("&")) {
+        if (u.getIRC().startsWithChannelPrefix(target)) {
             auto chan = u.getIRC().getChannel(target);
             if (chan is null) {
                 u.sendLine(u.getIRC().generateLine(LineType.ErrBadChanMask, target ~ " :Bad channel mask"));

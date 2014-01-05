@@ -1,9 +1,9 @@
-module org.royaldev.dircd.dIRCd;
+module dircd.dIRCd;
 
 import std.c.stdlib: exit;
 import std.getopt: getopt, config;
 
-import org.royaldev.dircd.irc.IRC;
+import dircd.irc.IRC;
 
 string hostname;
 string password;

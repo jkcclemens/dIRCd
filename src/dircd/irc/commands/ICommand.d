@@ -1,7 +1,7 @@
-module org.royaldev.dircd.irc.commands.ICommand;
+module dircd.irc.commands.ICommand;
 
 import std.regex: Captures;
-import org.royaldev.dircd.irc.User;
+import dircd.irc.User;
 
 public interface ICommand {
     public string getName();

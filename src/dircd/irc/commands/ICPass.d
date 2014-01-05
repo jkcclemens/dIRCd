@@ -1,8 +1,8 @@
-module org.royaldev.dircd.irc.commands.ICPass;
+module dircd.irc.commands.ICPass;
 
-import org.royaldev.dircd.irc.User;
-import org.royaldev.dircd.irc.LineType;
-import org.royaldev.dircd.irc.commands.ICommand;
+import dircd.irc.User;
+import dircd.irc.LineType;
+import dircd.irc.commands.ICommand;
 
 public class ICPass : ICommand {
 

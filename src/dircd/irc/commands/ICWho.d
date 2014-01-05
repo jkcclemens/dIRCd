@@ -1,9 +1,9 @@
-module org.royaldev.dircd.irc.commands.ICWho;
+module dircd.irc.commands.ICWho;
 
 import std.string: strip;
-import org.royaldev.dircd.irc.commands.ICommand;
-import org.royaldev.dircd.irc.User;
-import org.royaldev.dircd.irc.LineType;
+import dircd.irc.commands.ICommand;
+import dircd.irc.User;
+import dircd.irc.LineType;
 
 public class ICWho : ICommand {
 
