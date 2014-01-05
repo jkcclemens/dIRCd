@@ -1,18 +1,20 @@
 module dircd.irc.IRC;
 
+import core.thread: Thread;
+
+import dircd.irc.Channel;
+import dircd.irc.commands._;
+import dircd.irc.LineType;
+import dircd.irc.User;
+
+import std.algorithm: remove, startsWith;
 import std.c.stdlib: exit;
+import std.conv: to;
 import std.regex: regex, Regex, match, rreplace = replace, Captures;
 import std.socket: Socket, SocketException, SocketType, AddressFamily, InternetAddress;
 import std.stdio: writeln;
-import std.utf: UTFException, toUTF8;
-import std.conv: to;
-import std.algorithm: remove, startsWith;
 import std.string: format, toLower, strip;
-import core.thread: Thread;
-import dircd.irc.LineType;
-import dircd.irc.User;
-import dircd.irc.Channel;
-import dircd.irc.commands._;
+import std.utf: UTFException, toUTF8;
 
 public class IRC {
     private Socket s;

@@ -1,11 +1,11 @@
 module dircd.irc.commands.ICPong;
 
+import dircd.irc.commands.ICommand;
+import dircd.irc.LineType;
+import dircd.irc.User;
+
 import std.datetime: Clock;
 import std.string: strip;
-
-import dircd.irc.User;
-import dircd.irc.LineType;
-import dircd.irc.commands.ICommand;
 
 public class ICPong : ICommand {
 

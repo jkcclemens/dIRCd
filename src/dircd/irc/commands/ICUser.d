@@ -1,10 +1,10 @@
 module dircd.irc.commands.ICUser;
 
-import std.string: strip;
-
-import dircd.irc.User;
-import dircd.irc.LineType;
 import dircd.irc.commands.ICommand;
+import dircd.irc.LineType;
+import dircd.irc.User;
+
+import std.string: strip;
 
 public class ICUser : ICommand {
 

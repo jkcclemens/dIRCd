@@ -1,9 +1,9 @@
 module dircd.irc.commands.ICJoin;
 
-import dircd.irc.User;
 import dircd.irc.Channel;
-import dircd.irc.LineType;
 import dircd.irc.commands.ICommand;
+import dircd.irc.LineType;
+import dircd.irc.User;
 
 public class ICJoin : ICommand {
 

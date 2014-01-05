@@ -1,9 +1,9 @@
 module dircd.dIRCd;
 
+import dircd.irc.IRC;
+
 import std.c.stdlib: exit;
 import std.getopt: getopt, config;
-
-import dircd.irc.IRC;
 
 string hostname;
 string password;

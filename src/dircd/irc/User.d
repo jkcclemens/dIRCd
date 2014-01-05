@@ -1,17 +1,19 @@
 module dircd.irc.User;
 
-import std.socket: Socket;
-import std.algorithm: remove;
-import std.regex: regex, rreplace = replace, match;
-import std.string: split, toUpper, strip, format;
-import std.conv: to;
-import dircd.irc.LineType;
-import dircd.irc.IRC;
-import dircd.irc.Channel;
-import dircd.irc.modes.UserMode;
 import core.time: dur;
-import std.stdio: writeln;
+
+import dircd.irc.Channel;
+import dircd.irc.IRC;
+import dircd.irc.LineType;
+import dircd.irc.modes.UserMode;
+
+import std.algorithm: remove;
+import std.conv: to;
 import std.datetime: Clock;
+import std.regex: regex, rreplace = replace, match;
+import std.socket: Socket;
+import std.stdio: writeln;
+import std.string: split, toUpper, strip, format;
 
 public class User {
 

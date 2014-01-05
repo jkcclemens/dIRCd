@@ -1,9 +1,10 @@
 module dircd.irc.commands.ICWho;
 
-import std.string: strip;
 import dircd.irc.commands.ICommand;
-import dircd.irc.User;
 import dircd.irc.LineType;
+import dircd.irc.User;
+
+import std.string: strip;
 
 public class ICWho : ICommand {
 

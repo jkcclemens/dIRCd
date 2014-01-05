@@ -1,8 +1,8 @@
 module dircd.irc.commands.ICIson;
 
-import dircd.irc.User;
-import dircd.irc.LineType;
 import dircd.irc.commands.ICommand;
+import dircd.irc.LineType;
+import dircd.irc.User;
 
 public class ICIson : ICommand {
 

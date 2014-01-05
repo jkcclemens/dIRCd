@@ -1,10 +1,10 @@
 module dircd.irc.commands.ICMode;
 
-import dircd.irc.User;
-import dircd.irc.LineType;
 import dircd.irc.commands.ICommand;
-import dircd.irc.modes.UserMode;
+import dircd.irc.LineType;
 import dircd.irc.modes.ChanMode;
+import dircd.irc.modes.UserMode;
+import dircd.irc.User;
 
 public class ICMode : ICommand {
 

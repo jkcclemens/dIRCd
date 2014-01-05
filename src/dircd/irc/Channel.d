@@ -1,8 +1,9 @@
 module dircd.irc.Channel;
 
-import std.algorithm: countUntil, remove;
-import dircd.irc.User;
 import dircd.irc.modes.ChanMode;
+import dircd.irc.User;
+
+import std.algorithm: countUntil, remove;
 
 public class Channel {
 
@@ -12,6 +13,7 @@ public class Channel {
     private User topicUser; // person who set topic
 
     private ChanMode[] modes = [ChanMode.NoOutsideMessages, ChanMode.TopicOpOnly];
+    private string[int] modeParams;
 
     public this(string name) {
         this.name = name;

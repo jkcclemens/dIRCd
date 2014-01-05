@@ -1,11 +1,11 @@
 module dircd.irc.commands.ICQuit;
 
-import std.string: strip;
-
 import dircd.irc.Channel;
-import dircd.irc.User;
-import dircd.irc.LineType;
 import dircd.irc.commands.ICommand;
+import dircd.irc.LineType;
+import dircd.irc.User;
+
+import std.string: strip;
 
 public class ICQuit : ICommand {
 

@@ -1,7 +1,8 @@
 module dircd.irc.commands.ICommand;
 
-import std.regex: Captures;
 import dircd.irc.User;
+
+import std.regex: Captures;
 
 public interface ICommand {
     public string getName();

@@ -1,7 +1,8 @@
 module dircd.irc.commands.CommandHandler;
 
-import std.string: toLower;
 import dircd.irc.commands.ICommand;
+
+import std.string: toLower;
 
 public class CommandHandler {
 
