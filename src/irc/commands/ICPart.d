@@ -11,15 +11,18 @@ public class ICPart : ICommand {
     }
 
     public void run(User u, Captures!(string, ulong) line) {
-        auto chan = line["params"];
+        auto chansString = line["params"];
         auto message = line["trail"];
-        if (chan.strip() == "") return; // needs more params!
-        auto channel = u.getIRC().getChannel(chan);
-        if (channel is null) {
-            u.sendLine(u.getIRC().generateLine(LineType.ErrBadChanMask, chan ~ " :Bad channel mask"));
-            return;
+        if (chansString.strip() == "") return; // needs more params!
+        auto chans = chansString.split(",");
+        foreach (string chan; chans) {
+            auto channel = u.getIRC().getChannel(chan);
+            if (channel is null) {
+                u.sendLine(u.getIRC().generateLine(LineType.ErrBadChanMask, chan ~ " :Bad channel mask"));
+                return;
+            }
+            channel.partUser(u, message);
         }
-        channel.partUser(u, message);
     }
 
 }
