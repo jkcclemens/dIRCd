@@ -155,6 +155,9 @@ public class Channel {
         if (index == -1) return;
         users = users.remove(index);
         if (users.length < 1) this.irc.removeChannel(this);
+        foreach (Mode m; this.getModesForParam(u.getNick())) {
+            this.modes = this.modes.remove(this.modes.countUntil(m));
+        }
     }
 
 }
