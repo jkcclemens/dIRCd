@@ -156,6 +156,7 @@ public enum LineType : int {
     ErrTooManyTargets   = 407,                  // <target> :Duplicate recipients. No message delivered
     ErrNoColors         = 408,                  // <nickname> #<channel> :You cannot use colors on this channel. Not sent: <text>   DALNET
     ErrNoOrigin         = 409,                  // :No origin specified
+    ErrInvalidCapCmd    = 410,
     ErrNoRecipient      = 411,                  // :No recipient given (<command>)
     ErrNoTextToSend     = 412,                  // :No text to send
     ErrNoTopLevel       = 413,                  // <mask> :No toplevel domain specified

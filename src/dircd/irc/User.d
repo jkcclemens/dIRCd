@@ -2,6 +2,7 @@ module dircd.irc.User;
 
 import core.time: dur;
 
+import dircd.irc.cap.Capability;
 import dircd.irc.Channel;
 import dircd.irc.IRC;
 import dircd.irc.LineType;
@@ -30,6 +31,7 @@ public class User {
     private string hostname;
 
     private UserMode[] modes;
+    private Capability[] caps;
 
     private const long connTime;
     private long lastPing = 0L;
@@ -65,6 +67,14 @@ public class User {
 
     public bool isRegistered() {
         return nick !is null && user !is null;
+    }
+
+    public Capability[] getCapabilities() {
+        return this.caps;
+    }
+
+    public void setCapabilities(Capability[] caps) {
+        this.caps = caps;
     }
 
     public UserMode[] getModes() {

@@ -1,6 +1,7 @@
 module dircd.irc.commands._;
 
 public import dircd.irc.commands.CommandHandler;
+public import dircd.irc.commands.ICCap;
 public import dircd.irc.commands.ICIson;
 public import dircd.irc.commands.ICJoin;
 public import dircd.irc.commands.ICMode;
