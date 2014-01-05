@@ -17,11 +17,14 @@ import org.royaldev.dircd.irc.commands._;
 public class IRC {
     private Socket s;
     /**
-    * This supports &amp; and # as channel starters (per IRC RFC - see
+    * This supports &amp;, +, !, and # as channel starters (per IRC RFC - see
     * http://tools.ietf.org/html/rfc1459.html#section-1.3). The only additional restriction on channel names imposed
     * by this server is that there may be no carriage returns or line breaks in the channel name.
+    * In this server, RFC is not followed for channel prefix meanings to the fullest extent.
+    * &amp;, !, and # are normal channels.
+    * + is a no-mode channel (per RFC).
     */
-    private Regex!char chanRegex = regex(r"^([#&][^\x07, \r\n]{1,200})$", "g");
+    private Regex!char chanRegex = regex(r"^([&#+!][^\x07, \r\n]{1,50})$", "g");
     private Regex!char lineRegex = regex(r"^(:(?P<prefix>\S+) )?(?P<command>\S+)( (?!:)(?P<params>.+?))?( :(?P<trail>.+)?)?$", "g");
     private string host;
     private string pass;
