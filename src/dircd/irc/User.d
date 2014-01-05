@@ -5,6 +5,7 @@ import core.time: dur;
 import dircd.irc.Channel;
 import dircd.irc.IRC;
 import dircd.irc.LineType;
+import dircd.irc.modes.ChanMode;
 import dircd.irc.modes.UserMode;
 
 import std.algorithm: remove;
@@ -13,7 +14,8 @@ import std.datetime: Clock;
 import std.regex: regex, rreplace = replace, match;
 import std.socket: Socket;
 import std.stdio: writeln;
-import std.string: split, toUpper, strip, format;
+import std.string: split, toUpper, strip, format, capitalize;
+import std.traits: EnumMembers;
 
 public class User {
 
@@ -34,6 +36,7 @@ public class User {
     private long lastPong = 0L;
 
     private bool connected;
+    private bool welcomeSent;
     public bool correctPass;
 
     public this(Socket connection, IRC server) {
@@ -42,6 +45,26 @@ public class User {
         this.connTime = Clock.currTime().toUnixTime();
         this.connected = true;
         this.correctPass = false;
+    }
+
+    public void sendWelcome() {
+        if (welcomeSent) return;
+        this.sendLine(this.irc.generateLine(this, LineType.RplWelcome, "Welcome to dIRCd."));
+        this.sendLine(this.irc.generateLine(this, LineType.RplYourHost, "Your host is %s, running version %s".format(this.irc.getHost(), "dIRCd[v1.0]")));
+        auto created = this.irc.getTimeCreated();
+        this.sendLine(this.irc.generateLine(this, LineType.RplCreated, "This server was created %s %d %d at %02d:%02d:%02d".format(to!string(created.month).capitalize(), created.day, created.year, created.hour, created.minute, created.second)));
+        string modes = "";
+        foreach (member; EnumMembers!UserMode) modes ~= member;
+        modes ~= " ";
+        foreach (member; EnumMembers!ChanMode) modes ~= member;
+        this.sendLine(this.irc.generateLine(this, LineType.RplMyInfo, "%s %s %s".format(this.irc.getHost(), "dIRCd[v1.0]", modes)));
+        this.sendLine(this.irc.generateLine(this, LineType.RplMotdStart, ""));
+        this.sendLine(this.irc.generateLine(this, LineType.RplMotdEnd, ""));
+        welcomeSent = true;
+    }
+
+    public bool isRegistered() {
+        return nick !is null && user !is null;
     }
 
     public UserMode[] getModes() {

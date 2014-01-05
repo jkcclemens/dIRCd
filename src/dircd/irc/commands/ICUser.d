@@ -23,6 +23,7 @@ public class ICUser : ICommand {
         u.setRealName(realname);
         //u.setHostname(hostname);
         u.setUser(givenUser);
+        if (u.isRegistered()) u.sendWelcome();
     }
 
 }

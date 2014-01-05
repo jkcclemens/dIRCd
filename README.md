@@ -59,7 +59,6 @@ included in this server. However, many things still work.
 
 ## Bugs
 - (Possible) Ping timeouts may take longer than 120 seconds.
-- NICK & USER do not wait for both to be sent before a welcome is sent
 
 ## Planned Features
 - [CAP](http://ircv3.org/specification/capability-negotiation-3.1) support

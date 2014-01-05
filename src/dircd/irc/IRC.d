@@ -10,6 +10,7 @@ import dircd.irc.User;
 import std.algorithm: remove, startsWith;
 import std.c.stdlib: exit;
 import std.conv: to;
+import std.datetime: Clock, SysTime;
 import std.regex: regex, Regex, match, rreplace = replace, Captures;
 import std.socket: Socket, SocketException, SocketType, AddressFamily, InternetAddress;
 import std.stdio: writeln;
@@ -32,12 +33,15 @@ public class IRC {
     private string pass;
     private short port;
 
+    private SysTime created;
+
     private CommandHandler ch = new CommandHandler();
 
     private User[] users;
     private Channel[string] channels;
 
     public this(string host, short port, string pass) {
+        created = Clock.currTime;
         addCommands();
         this.host = host, this.port = port, this.pass = pass;
         try {
@@ -64,6 +68,10 @@ public class IRC {
         ch.addCommand(new ICTopic());
         ch.addCommand(new ICUser());
         ch.addCommand(new ICWho());
+    }
+
+    public SysTime getTimeCreated() {
+        return this.created;
     }
 
     public CommandHandler getCommandHandler() {

@@ -29,11 +29,7 @@ public class ICNick : ICommand {
         bool firstSet = u.getNick() is null;
         u.setNick(newNick);
         u.sendLine(":" ~ u.getHostmask() ~ " NICK :" ~ newNick);
-        if (firstSet) {
-            u.sendLine(u.getIRC().generateLine(u, LineType.RplWelcome, "Welcome to dIRCd."));
-            u.sendLine(u.getIRC().generateLine(u, LineType.RplMotdStart, ""));
-            u.sendLine(u.getIRC().generateLine(u, LineType.RplMotdEnd, ""));
-        }
+        if (firstSet && u.isRegistered()) u.sendWelcome();
     }
 
 }
