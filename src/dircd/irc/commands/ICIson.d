@@ -13,7 +13,7 @@ public class ICIson : ICommand {
     public void run(User u, Captures!(string, ulong) line) {
         auto nickList = line["params"];
         if (nickList.strip() == "") {
-            u.sendLine(u.getIRC().generateLine(LineType.ErrNeedMoreParams, "ISON :Not enough parameters"));
+            u.sendLine(u.getIRC().generateLine(u, LineType.ErrNeedMoreParams, "ISON :Not enough parameters"));
             return;
         }
         string reply = ":";
@@ -23,7 +23,7 @@ public class ICIson : ICommand {
             foreach (User user; u.getIRC().getUsers()) if (user.getNick() == nick) reply ~= user.getNick() ~ ",";
         }
         if (reply.split(",").length > 1) reply = reply[0..$-1]; // cut off last ","
-        u.sendLine(u.getIRC().generateLine(LineType.RplIsOn, u.getNick() ~ " " ~ reply));
+        u.sendLine(u.getIRC().generateLine(u, LineType.RplIsOn, reply));
     }
 
 }

@@ -13,7 +13,7 @@ import std.conv: to;
 import std.regex: regex, Regex, match, rreplace = replace, Captures;
 import std.socket: Socket, SocketException, SocketType, AddressFamily, InternetAddress;
 import std.stdio: writeln;
-import std.string: format, toLower, strip;
+import std.string: toLower, strip;
 import std.utf: UTFException, toUTF8;
 
 public class IRC {
@@ -108,7 +108,11 @@ public class IRC {
     }
 
     public string generateLine(LineType lt, string params) {
-        return format(":%s %03d %s", getHost(), lt, params);
+        return ":%s %03d %s".format(getHost(), lt, params);
+    }
+
+    public string generateLine(User target, LineType lt, string params) {
+        return ":%s %03d %s %s".format(getHost(), lt, target.getNick(), params);
     }
 
     public bool startsWithChannelPrefix(string s) {

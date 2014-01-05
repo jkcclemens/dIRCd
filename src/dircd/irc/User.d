@@ -219,7 +219,7 @@ public class User {
             }
             auto ic = this.irc.getCommandHandler().getCommand(command);
             if (ic is null) {
-                sendLine(this.irc.generateLine(LineType.ErrUnknownCommand, this.getNick() ~ " " ~ command ~ " :Unknown command"));
+                sendLine(this.irc.generateLine(this, LineType.ErrUnknownCommand, command ~ " :Unknown command"));
                 continue;
             }
             ic.run(this, line);

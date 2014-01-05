@@ -12,24 +12,23 @@ public class ICWho : ICommand {
         return "WHO";
     }
 
-    public void run(User runner, Captures!(string, ulong) line) {
+    public void run(User u, Captures!(string, ulong) line) {
         auto chan = line["params"];
         if (chan.strip() == "") return;
-        auto channel = runner.getIRC().getChannel(chan);
+        auto channel = u.getIRC().getChannel(chan);
         if (channel is null) return; // we don't support this yet
-        foreach (User u; channel.getUsers()) {
-            auto toSend = "%s %s %s %s %s %s H :%s %s".format(
-                runner.getNick(),
+        foreach (User user; channel.getUsers()) {
+            auto toSend = "%s %s %s %s %s H :%s %s".format(
                 channel.getName(),
-                u.getUser(),
-                u.getHostname(),
-                u.getIRC().getHost(),
-                u.getNick(),
+                user.getUser(),
+                user.getHostname(),
+                user.getIRC().getHost(),
+                user.getNick(),
                 0,
-                u.getRealName()
+                user.getRealName()
             );
-            runner.sendLine(runner.getIRC().generateLine(LineType.RplWhoReply, toSend));
+            u.sendLine(u.getIRC().generateLine(u, LineType.RplWhoReply, toSend));
         }
-        runner.sendLine(runner.getIRC().generateLine(LineType.RplEndOfWho, channel.getName() ~ " :End of /WHO list"));
+        u.sendLine(u.getIRC().generateLine(u, LineType.RplEndOfWho, "%s :End of /WHO list".format(channel.getName())));
     }
 }

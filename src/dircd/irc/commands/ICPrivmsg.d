@@ -13,13 +13,13 @@ public class ICPrivmsg : ICommand {
     public void run(User u, Captures!(string, ulong) line) {
         auto target = line["params"], message = line["trail"];
         if (target.strip() == "" || message.strip() == "") {
-            u.sendLine(u.getIRC().generateLine(LineType.ErrNeedMoreParams, "PRIVMSG :Need more parameters"));
+            u.sendLine(u.getIRC().generateLine(u, LineType.ErrNeedMoreParams, "PRIVMSG :Need more parameters"));
             return;
         }
         if (u.getIRC().startsWithChannelPrefix(target)) {
             auto chan = u.getIRC().getChannel(target);
             if (chan is null) {
-                u.sendLine(u.getIRC().generateLine(LineType.ErrBadChanMask, target ~ " :Bad channel mask"));
+                u.sendLine(u.getIRC().generateLine(u, LineType.ErrBadChanMask, target ~ " :Bad channel mask"));
                 return;
             }
             chan.sendMessage(u, message);

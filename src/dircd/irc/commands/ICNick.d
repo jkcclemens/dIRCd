@@ -17,12 +17,12 @@ public class ICNick : ICommand {
     public void run(User u, Captures!(string, ulong) line) {
         auto newNick = line["params"];
         if (newNick.match(nickRegex)) {
-            u.sendLine(u.getIRC().generateLine(LineType.ErrErroneusNickname, newNick ~ " :Erroneous nickname"));
+            u.sendLine(u.getIRC().generateLine(u, LineType.ErrErroneusNickname, newNick ~ " :Erroneous nickname"));
             return;
         }
         foreach (User user; u.getIRC().getUsers()) {
             if (user.getNick() == newNick) {
-                u.sendLine(u.getIRC().generateLine(LineType.ErrNickNameInUse, newNick ~ " :This nick is already being used."));
+                u.sendLine(u.getIRC().generateLine(u, LineType.ErrNickNameInUse, newNick ~ " :This nick is already being used."));
                 return;
             }
         }
@@ -30,9 +30,9 @@ public class ICNick : ICommand {
         u.setNick(newNick);
         u.sendLine(":" ~ u.getHostmask() ~ " NICK :" ~ newNick);
         if (firstSet) {
-            u.sendLine(u.getIRC().generateLine(LineType.RplWelcome, ""));
-            u.sendLine(u.getIRC().generateLine(LineType.RplMotdStart, ""));
-            u.sendLine(u.getIRC().generateLine(LineType.RplMotdEnd, ""));
+            u.sendLine(u.getIRC().generateLine(u, LineType.RplWelcome, "Welcome to dIRCd."));
+            u.sendLine(u.getIRC().generateLine(u, LineType.RplMotdStart, ""));
+            u.sendLine(u.getIRC().generateLine(u, LineType.RplMotdEnd, ""));
         }
     }
 

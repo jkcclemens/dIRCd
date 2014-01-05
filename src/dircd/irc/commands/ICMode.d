@@ -20,7 +20,7 @@ public class ICMode : ICommand {
         if (u.getIRC().startsWithChannelPrefix(target)) {
             auto channel = u.getIRC().getChannel(target);
             if (channel is null) {
-                u.sendLine(u.getIRC().generateLine(LineType.ErrBadChanMask, target ~ " :Bad channel mask"));
+                u.sendLine(u.getIRC().generateLine(u, LineType.ErrBadChanMask, target ~ " :Bad channel mask"));
                 return;
             }
             if (query) {

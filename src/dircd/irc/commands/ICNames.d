@@ -15,13 +15,13 @@ public class ICNames : ICommand {
         if (chan.strip() == "") return; // not implemented
         auto channel = u.getIRC().getChannel(chan);
         if (channel is null) {
-            u.sendLine(u.getIRC().generateLine(LineType.ErrBadChanMask, chan ~ " :Bad channel mask"));
+            u.sendLine(u.getIRC().generateLine(u, LineType.ErrBadChanMask, chan ~ " :Bad channel mask"));
             return;
         }
-        string toSend = u.getNick() ~ " = " ~ channel.getName() ~ " :";
+        string toSend = "= " ~ channel.getName() ~ " :";
         foreach (User user; channel.getUsers()) toSend ~= user.getNick() ~ " ";
-        u.sendLine(u.getIRC().generateLine(LineType.RplNamReply, toSend.strip()));
-        u.sendLine(u.getIRC().generateLine(LineType.RplEndOfNames, u.getNick() ~ " " ~ channel.getName() ~ " :End of /NAMES list"));
+        u.sendLine(u.getIRC().generateLine(u, LineType.RplNamReply, toSend.strip()));
+        u.sendLine(u.getIRC().generateLine(u, LineType.RplEndOfNames, "%s :End of /NAMES list".format(channel.getName())));
     }
 
 }

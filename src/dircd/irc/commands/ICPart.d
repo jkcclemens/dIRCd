@@ -18,7 +18,7 @@ public class ICPart : ICommand {
         foreach (string chan; chans) {
             auto channel = u.getIRC().getChannel(chan);
             if (channel is null) {
-                u.sendLine(u.getIRC().generateLine(LineType.ErrBadChanMask, chan ~ " :Bad channel mask"));
+                u.sendLine(u.getIRC().generateLine(u, LineType.ErrBadChanMask, chan ~ " :Bad channel mask"));
                 return;
             }
             channel.partUser(u, message);
