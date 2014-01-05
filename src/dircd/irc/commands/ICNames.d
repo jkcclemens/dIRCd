@@ -2,6 +2,8 @@ module dircd.irc.commands.ICNames;
 
 import dircd.irc.commands.ICommand;
 import dircd.irc.LineType;
+import dircd.irc.modes.ChanMode;
+import dircd.irc.modes.Mode;
 import dircd.irc.User;
 
 public class ICNames : ICommand {
@@ -19,7 +21,7 @@ public class ICNames : ICommand {
             return;
         }
         string toSend = "= " ~ channel.getName() ~ " :";
-        foreach (User user; channel.getUsers()) toSend ~= user.getNick() ~ " ";
+        foreach (User user; channel.getUsers()) toSend ~=  channel.getModeString(user) ~ user.getNick() ~ " ";
         u.sendLine(u.getIRC().generateLine(u, LineType.RplNamReply, toSend.strip()));
         u.sendLine(u.getIRC().generateLine(u, LineType.RplEndOfNames, "%s :End of /NAMES list".format(channel.getName())));
     }

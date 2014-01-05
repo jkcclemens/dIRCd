@@ -1,6 +1,7 @@
 module dircd.irc.Channel;
 
 import dircd.irc.IRC;
+import dircd.irc.modes.Mode;
 import dircd.irc.modes.ChanMode;
 import dircd.irc.User;
 
@@ -15,20 +16,28 @@ public class Channel {
     private string topic; // topic
     private User topicUser; // person who set topic
 
-    private ChanMode[] modes = [ChanMode.NoOutsideMessages, ChanMode.TopicOpOnly];
-    private string[int] modeParams;
+    private Mode[] modes = [new Mode(ChanMode.NoOutsideMessages), new Mode(ChanMode.TopicOpOnly)];
 
     public this(IRC irc, string name) {
         this.irc = irc;
         this.name = name;
     }
 
-    public ChanMode[] getModes() {
+    public Mode[] getModes() {
         return this.modes;
     }
 
-    public void setModes(ChanMode[] modes) {
+    public void setModes(Mode[] modes) {
         this.modes = modes;
+    }
+
+    public Mode[] getModesForParam(string param) {
+        Mode[] ms;
+        foreach (Mode m; this.modes) {
+            if (m.getParam() != param) continue;
+            ms ~= m;
+        }
+        return ms;
     }
 
     public void sendModes() {
@@ -37,8 +46,41 @@ public class Channel {
 
     public void sendModes(User u) {
         string toSend = "+";
-        foreach (ChanMode cm; this.getModes()) toSend ~= cm;
-        u.sendHostLine("MODE " ~ this.getName() ~ " " ~ toSend);
+        foreach (Mode m; this.getModes()) {
+            if (m.getMode() == ChanMode.ChannelOperator) continue;
+            toSend ~= m.getMode();
+        }
+        u.sendHostLine("MODE %s %s".format(this.getName(), toSend));
+    }
+
+    public string getModeString(User u) {
+        if (!this.hasUser(u)) return null; // no user
+        string mode = "";
+        /*foreach (Mode m; this.getModesForParam(u.getNick())) {
+            if (m.getMode() == ChanMode.Voice && mode == "") mode = "+";
+            if (m.getMode() == ChanMode.ChannelOperator) mode = "@";
+        }*/
+        if (this.userHasMode(u, ChanMode.ChannelOperator)) mode = "@";
+        if (this.userHasMode(u, ChanMode.Voice) && mode == "") mode = "+";
+        return mode;
+    }
+
+    public bool hasMode(ChanMode cm) {
+        foreach (Mode m; this.modes) if (m.getMode() == cm) return true;
+        return false;
+    }
+
+    public bool userHasMode(User u, ChanMode cm) {
+        foreach (Mode m; this.modes) if (m.getMode() == cm && m.getParam() == u.getNick()) return true;
+        return false;
+    }
+
+    public bool hasUser(User u) {
+        foreach (User user; this.users) {
+            if (u.getNick() != user.getNick()) continue;
+            return true;
+        }
+        return false;
     }
 
     public string getName() {
@@ -88,7 +130,7 @@ public class Channel {
         sendLineAll(":" ~ u.getHostmask() ~ " JOIN " ~ getName());
         if (isOp) {
             auto modes = this.getModes();
-            // do something
+            modes ~= new Mode(ChanMode.ChannelOperator, true, u.getNick());
             this.setModes(modes);
         }
     }

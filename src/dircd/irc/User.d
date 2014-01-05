@@ -7,6 +7,7 @@ import dircd.irc.Channel;
 import dircd.irc.IRC;
 import dircd.irc.LineType;
 import dircd.irc.modes.ChanMode;
+import dircd.irc.modes.Mode;
 import dircd.irc.modes.UserMode;
 
 import std.algorithm: remove;

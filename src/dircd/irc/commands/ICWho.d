@@ -2,6 +2,8 @@ module dircd.irc.commands.ICWho;
 
 import dircd.irc.commands.ICommand;
 import dircd.irc.LineType;
+import dircd.irc.modes.ChanMode;
+import dircd.irc.modes.Mode;
 import dircd.irc.User;
 
 import std.string: strip;
@@ -18,12 +20,14 @@ public class ICWho : ICommand {
         auto channel = u.getIRC().getChannel(chan);
         if (channel is null) return; // we don't support this yet
         foreach (User user; channel.getUsers()) {
-            auto toSend = "%s %s %s %s %s H :%s %s".format(
+            string mode = channel.getModeString(user);
+            auto toSend = "%s %s %s %s %s H *%s :%s %s".format(
                 channel.getName(),
                 user.getUser(),
                 user.getHostname(),
                 user.getIRC().getHost(),
                 user.getNick(),
+                mode != "" ? " " ~ mode : "",
                 0,
                 user.getRealName()
             );

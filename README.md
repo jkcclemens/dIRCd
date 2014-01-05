@@ -17,6 +17,7 @@ There are many deviations from the spec in the IRC RFC in this server. They are 
 - Wildcards are, at this point, not implemented (RFC)
 - No OPER support ([RFC](http://tools.ietf.org/html/rfc1459.html#section-4.1.5))
 - Partial MODE support ([RFC](http://tools.ietf.org/html/rfc1459.html#section-4.2.3), partially planned)
+  - No "r" mode support (reop) ([RFC](http://tools.ietf.org/html/rfc2811#section-4.2.7))
   - No KICK support ([RFC](http://tools.ietf.org/html/rfc1459.html#section-4.2.8))
 - No LIST support ([RFC](http://tools.ietf.org/html/rfc1459.html#section-4.2.6), planned)
 - No INVITE support ([RFC](http://tools.ietf.org/html/rfc1459.html#section-4.2.7), planned)
