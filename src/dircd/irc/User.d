@@ -238,8 +238,9 @@ public class User {
                 continue;
             }
             auto command = line["command"].toUpper();
+            if (!this.isRegistered() && (command != "CAP" && command != "PONG" && command != "USER" && command != "NICK")) continue;
             if (this.irc.getPass() !is null && !this.correctPass) {
-                if (command != "PASS" && command != "PONG") continue;
+                if (command != "PASS" && command != "PONG" && command != "CAP") continue;
             }
             auto ic = this.irc.getCommandHandler().getCommand(command);
             if (ic is null) {
