@@ -12,5 +12,6 @@ public import dircd.irc.commands.ICPass;
 public import dircd.irc.commands.ICPong;
 public import dircd.irc.commands.ICPrivmsg;
 public import dircd.irc.commands.ICQuit;
+public import dircd.irc.commands.ICTopic;
 public import dircd.irc.commands.ICUser;
 public import dircd.irc.commands.ICWho;

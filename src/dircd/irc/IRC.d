@@ -59,6 +59,7 @@ public class IRC {
         ch.addCommand(new ICPong());
         ch.addCommand(new ICPrivmsg());
         ch.addCommand(new ICQuit());
+        ch.addCommand(new ICTopic());
         ch.addCommand(new ICUser());
         ch.addCommand(new ICWho());
     }

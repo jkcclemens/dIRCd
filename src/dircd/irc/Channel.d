@@ -51,9 +51,10 @@ public class Channel {
         return this.topicUser;
     }
 
-    public void setTopic(string topic, User setting) {
+    public void setTopic(User setting, string topic) {
         this.topic = topic;
         this.topicUser = setting;
+        sendLineAll(":" ~ setting.getHostmask() ~ " TOPIC " ~ this.getName() ~ " :" ~ topic);
     }
 
     public void sendMessage(User who, string message) {
