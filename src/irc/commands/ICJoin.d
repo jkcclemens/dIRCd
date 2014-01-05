@@ -1,6 +1,7 @@
 module org.royaldev.dircd.irc.commands.ICJoin;
 
 import org.royaldev.dircd.irc.User;
+import org.royaldev.dircd.irc.Channel;
 import org.royaldev.dircd.irc.LineType;
 import org.royaldev.dircd.irc.commands.ICommand;
 
@@ -15,6 +16,10 @@ public class ICJoin : ICommand {
         if (chansString.strip() == "") return;
         auto chans = chansString.split(",");
         foreach (string chan; chans) {
+            if (chan == "0") {
+                foreach (Channel c; u.getChannels()) c.partUser(u, "");
+                continue;
+            }
             auto channel = u.getIRC().getChannel(chan);
             if (channel is null) {
                 u.sendLine(u.getIRC().generateLine(LineType.ErrBadChanMask, chan ~ " :Bad channel mask"));
