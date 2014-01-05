@@ -31,6 +31,22 @@ public class Channel {
         this.modes = modes;
     }
 
+    public void addMode(Mode mode) {
+        foreach (Mode m; this.modes) {
+            if (m.equals(mode)) return; // do not add duplicated modes
+        }
+        this.modes ~= mode;
+    }
+
+    public void removeMode(Mode m) {
+        int index = -1;
+        for (int i = 0; i < this.modes.length; i++) {
+            if (!m.equals(this.modes[i])) continue;
+        }
+        if (index == -1) return; // not found
+        this.modes = this.modes.remove(index);
+    }
+
     public Mode[] getModesForParam(string param) {
         Mode[] ms;
         foreach (Mode m; this.modes) {
