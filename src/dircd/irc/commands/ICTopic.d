@@ -20,7 +20,10 @@ public class ICTopic : ICommand {
             u.sendLine(u.getIRC().generateLine(u, LineType.ErrBadChanMask, chan ~ " :Bad channel mask"));
             return;
         }
-        if (channel.hasMode(ChanMode.TopicOpOnly) && !channel.userHasMode(u, ChanMode.ChannelOperator)) return; // error message
+        if (channel.hasMode(ChanMode.TopicOpOnly) && !channel.userHasMode(u, ChanMode.ChannelOperator)) {
+            u.sendLine(u.getIRC().generateLine(u, LineType.ErrChanOpPrivIsNeeded, channel.getName() ~ " :You're not a channel operator"));
+            return;
+        }
         channel.setTopic(u, topic);
     }
 
