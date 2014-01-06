@@ -21,6 +21,7 @@ public class Channel {
     public this(IRC irc, string name) {
         this.irc = irc;
         this.name = name;
+        if (name == "#anon") modes ~= new Mode(ChanMode.Anonymous);
     }
 
     public Mode[] getModes() {
@@ -126,7 +127,13 @@ public class Channel {
     }
 
     public void sendMessage(User who, string message) {
-        sendLineAllExcept(who, ":" ~ who.getHostmask() ~ " PRIVMSG " ~ this.getName() ~ " :" ~ message);
+        if (this.hasMode(ChanMode.Anonymous)) sendLineAllExcept(who, ":anonymous!anonymous@anonymous PRIVMSG %s :%s".format(this.getName(), message));
+        else sendLineAllExcept(who, ":%s PRIVMSG %s :%s".format(who.getHostmask(), this.getName(), message));
+    }
+
+    public void sendNotice(User who, string message) {
+        if (this.hasMode(ChanMode.Anonymous)) sendLineAllExcept(who, ":anonymous!anonymous@anonymous NOTICE %s :%s".format(this.getName(), message));
+        else sendLineAllExcept(who, ":%s NOTICE %s :%s".format(who.getHostmask, this.getName(), message));
     }
 
     public void sendLineAll(string line) {
@@ -147,7 +154,10 @@ public class Channel {
     public void addUser(User u) {
         bool isOp = this.users.length < 1; // first user gets op
         this.users ~= u;
-        sendLineAll(":" ~ u.getHostmask() ~ " JOIN " ~ getName());
+        if (this.hasMode(ChanMode.Anonymous)) {
+            sendLineAllExcept(u, ":anonymous!anonymous@anonymous JOIN %s".format(getName()));
+            u.sendLine(":%s JOIN %s".format(u.getHostmask(), getName()));
+        } else sendLineAll(":" ~ u.getHostmask() ~ " JOIN " ~ getName());
         if (isOp) {
             auto modes = this.getModes();
             modes ~= new Mode(ChanMode.ChannelOperator, true, u.getNick());
@@ -161,7 +171,8 @@ public class Channel {
     }
 
     public void quitUser(User u, string message) {
-        sendLineAll(":" ~ u.getHostmask() ~ " QUIT :" ~ message);
+        if (this.hasMode(ChanMode.Anonymous)) sendLineAll(":anonymous!anonymous@anonymous PART:%s".format(message));
+        else sendLineAll(":%s QUIT :%s".format(u.getHostmask(), message));
         removeUser(u);
     }
 

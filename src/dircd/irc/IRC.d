@@ -61,6 +61,7 @@ public class IRC {
         ch.addCommand(new ICMode());
         ch.addCommand(new ICNames());
         ch.addCommand(new ICNick());
+        ch.addCommand(new ICNotice());
         ch.addCommand(new ICPart());
         ch.addCommand(new ICPass());
         ch.addCommand(new ICPong());

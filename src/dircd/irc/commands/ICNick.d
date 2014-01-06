@@ -21,7 +21,7 @@ public class ICNick : ICommand {
             return;
         }
         foreach (User user; u.getIRC().getUsers()) {
-            if (user.getNick() == newNick) {
+            if (user.getNick() == newNick || newNick == "anonymous") {
                 u.sendLine(u.getIRC().generateLine(u, LineType.ErrNickNameInUse, newNick ~ " :This nick is already being used."));
                 return;
             }

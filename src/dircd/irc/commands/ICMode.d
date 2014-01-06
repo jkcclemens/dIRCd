@@ -86,6 +86,11 @@ public class ICMode : ICommand {
         }
     }
 
+    public void validate(Channel c, Mode m) {
+        auto mode = m.getMode();
+        if (mode == ChanMode.ChannelOperator && !c.hasUser(m.getParam())) throw new ModeException(LineType.ErrNoSuchNick, "User not in channel");
+    }
+
     public class ModeException : Exception {
         private LineType lt;
         private string message;
@@ -102,11 +107,6 @@ public class ICMode : ICommand {
         public string getMessage() {
             return this.message;
         }
-    }
-
-    public void validate(Channel c, Mode m) {
-        auto mode = m.getMode();
-        if (mode == ChanMode.ChannelOperator && !c.hasUser(m.getParam())) throw new ModeException(LineType.ErrNoSuchNick, "User not in channel");
     }
 
 }

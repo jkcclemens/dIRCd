@@ -19,17 +19,19 @@ public class ICWho : ICommand {
         if (chan.strip() == "") return;
         auto channel = u.getIRC().getChannel(chan);
         if (channel is null) return; // we don't support this yet
+        bool anonymous = channel.hasMode(ChanMode.Anonymous);
         foreach (User user; channel.getUsers()) {
+            bool display = user.getNick() == u.getNick() || !anonymous;
             string mode = channel.getModeString(user);
             auto toSend = "%s %s %s %s %s H *%s :%s %s".format(
                 channel.getName(),
-                user.getUser(),
-                user.getHostname(),
+                display ? user.getUser() : "anonymous",
+                display ? user.getHostname() : "anonymous",
                 user.getIRC().getHost(),
-                user.getNick(),
+                display ? user.getNick() : "anonymous",
                 mode != "" ? " " ~ mode : "",
                 0,
-                user.getRealName()
+                display ? user.getRealName() : "anonymous"
             );
             u.sendLine(u.getIRC().generateLine(u, LineType.RplWhoReply, toSend));
         }

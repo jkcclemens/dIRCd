@@ -21,7 +21,11 @@ public class ICNames : ICommand {
             return;
         }
         string toSend = "= " ~ channel.getName() ~ " :";
-        foreach (User user; channel.getUsers()) toSend ~=  channel.getModeString(user) ~ user.getNick() ~ " ";
+        bool anonymous = channel.hasMode(ChanMode.Anonymous);
+        foreach (User user; channel.getUsers()) {
+            auto nick = (anonymous && user.getNick() != u.getNick()) ? "anonymous" : user.getNick();
+            toSend ~=  channel.getModeString(user) ~ nick ~ " ";
+        }
         u.sendLine(u.getIRC().generateLine(u, LineType.RplNamReply, toSend.strip()));
         u.sendLine(u.getIRC().generateLine(u, LineType.RplEndOfNames, "%s :End of /NAMES list".format(channel.getName())));
     }

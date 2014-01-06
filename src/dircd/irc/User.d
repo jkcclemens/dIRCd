@@ -93,7 +93,7 @@ public class User {
     public void sendModes(User u) {
         string toSend = "+";
         foreach (UserMode um; this.getModes()) toSend ~= um;
-        u.sendHostLine("MODE " ~ this.getNick() ~ " " ~ toSend);
+        u.sendHostLine("MODE %s %s".format(this.getNick(), toSend));
     }
 
     public bool isConnected() {
@@ -141,7 +141,7 @@ public class User {
     }
 
     public string getHostmask() {
-        return getNick() ~ "!" ~ getUser() ~ "@" ~ this.getHostname();
+        return "%s!%s@%s".format(getNick(), getUser(), getHostname());
     }
 
     public string getUser() {
@@ -192,7 +192,6 @@ public class User {
                 if (!amt) {
                     this.disconnect("Connection reset by peer");
                     break;
-
                 }
                 line ~= to!string(buff[0..amt]);
                 if (line.length >= 512) return line[0..512]; // RFC - 512 is the maximum length of any line
@@ -205,17 +204,21 @@ public class User {
     public void sendLine(string line) {
         with (s) {
             if (!isAlive()) return;
-            writeln("SENT ", this.getHostmask(), ": ", line);
+            writeln("SENT %s: %s".format(this.getHostmask, line));
             send(line ~ "\r\n");
         }
     }
 
     public void sendHostLine(string line) {
-        sendLine(":" ~ this.getIRC().getHost() ~ " " ~ line);
+        sendLine(":%s %s".format(this.getIRC().getHost(), line));
     }
 
     public void sendMessage(User who, string message) {
-        sendLine(":" ~ who.getHostmask() ~ " PRIVMSG " ~ this.getNick() ~ " :" ~ message);
+        sendLine(":%s PRIVMSG %s :%s".format(who.getHostmask(), this.getNick(), message));
+    }
+
+    public void sendNotice(User who, string message) {
+        sendLine(":%s NOTICE %s :%s".format(who.getHostmask, this.getNick, message));
     }
 
     public void disconnect(string reason) {
@@ -240,7 +243,7 @@ public class User {
         while (s.isAlive()) {
             auto lineText = readLine().rreplace(regex(r"\r?\n"), "");
             if (lineText.strip() == "") continue;
-            writeln("RECV ", this.getHostmask(), ": ", lineText);
+            writeln("RECV %s: %s".format(this.getHostmask(), lineText));
             Captures!(string, ulong) line;
             try {
                 line = this.irc.parseLine(lineText);
@@ -275,17 +278,17 @@ public class User {
 
         private : void run() {
             while (true) {
-                if (!u.isConnected()) break;
-                this.sleep(dur!"seconds"(5));
-                long currTime = Clock.currTime().toUnixTime();
-                if (u.getLastPong() != 0L && currTime - u.getLastPong() > 120) {
-                    u.disconnect("Ping timeout: %d seconds".format(currTime - u.getLastPong()));
-                    break;
+                if (!u.isConnected()) break; // if not connected, stop loop and thread
+                this.sleep(dur!"seconds"(5)); // sleep the thread for 5 seconds
+                long currTime = Clock.currTime().toUnixTime(); // get the current time in seconds
+                if (u.getLastPong() != 0L && currTime - u.getLastPong() > 120L) { // if the user has pong'd before and the time between then and now is more than 120 seconds
+                    u.disconnect("Ping timeout: %d seconds".format(currTime - u.getLastPong())); // ping timeout
+                    break; // stop thread
                 }
-                if (currTime - u.getLastPing() < 120) continue;
-                u.sendLine("PING " ~ u.getIRC().getHost());
-                u.setLastPing(currTime);
-                if (u.getLastPong() == 0L) u.setLastPong(currTime);
+                if (currTime - u.getLastPing() < 120L) continue; // if diff between now and last sent ping is less than 120, restart loop
+                u.sendLine("PING " ~ u.getIRC().getHost()); // send a ping
+                u.setLastPing(currTime); // set last ping time
+                if (u.getLastPong() == 0L) u.setLastPong(currTime); // if user hasn't pong'd before, set last pong to current time
             }
         }
     }

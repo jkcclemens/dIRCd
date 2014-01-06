@@ -7,6 +7,7 @@ public import dircd.irc.commands.ICJoin;
 public import dircd.irc.commands.ICMode;
 public import dircd.irc.commands.ICNames;
 public import dircd.irc.commands.ICNick;
+public import dircd.irc.commands.ICNotice;
 public import dircd.irc.commands.ICommand;
 public import dircd.irc.commands.ICPart;
 public import dircd.irc.commands.ICPass;
