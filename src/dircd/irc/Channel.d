@@ -92,8 +92,12 @@ public class Channel {
     }
 
     public bool hasUser(User u) {
+        return this.hasUser(u.getNick());
+    }
+
+    public bool hasUser(string nick) {
         foreach (User user; this.users) {
-            if (u.getNick() != user.getNick()) continue;
+            if (nick != user.getNick()) continue;
             return true;
         }
         return false;

@@ -1,5 +1,6 @@
 module dircd.irc.commands.ICMode;
 
+import dircd.irc.Channel;
 import dircd.irc.commands.ICommand;
 import dircd.irc.LineType;
 import dircd.irc.modes.ChanMode;
@@ -36,13 +37,21 @@ public class ICMode : ICommand {
             }
             auto modes = params[1..$];
             if (modes[0].startsWith("+") || modes[0].startsWith("-")) { // setting or removing
+                // TODO: Don't manually specify which modes take params
                 auto parsedMode = Mode.parseModeString!ChanMode(modes[0], modes.length > 1 ? modes[1..$] : [], ["ovklbeI", "ovklbeI"]);
                 if (parsedMode == null) return; // TODO: Throw exception instead
                 string toSend = "";
                 string toSendParams = "";
+                // TODO: Merge these loops into one
                 if (Mode.Operation.Add in parsedMode) {
                     toSend ~= "+";
                     foreach (Mode m; parsedMode[Mode.Operation.Add]) {
+                        try {
+                            validate(channel, m);
+                        } catch (ModeException e) {
+                            u.sendLine(u.getIRC().generateLine(u, e.getLineType(), e.getMessage()));
+                            continue;
+                        }
                         toSend ~= m.getMode();
                         if (m.takesParameter()) toSendParams ~= m.getParam() ~ " ";
                         channel.addMode(m);
@@ -57,7 +66,9 @@ public class ICMode : ICommand {
                     }
                 }
                 toSend ~= " " ~ toSendParams;
-                channel.sendLineAll(":%s MODE %s %s".format(u.getHostmask(), channel.getName(), toSend.strip()));
+                toSend = toSend.strip();
+                if (toSend[1..$] == "") return;
+                channel.sendLineAll(":%s MODE %s %s".format(u.getHostmask(), channel.getName(), toSend));
                 return;
             } else { // querying for some modes
                 /*foreach (string c; params[1..$])
@@ -73,6 +84,29 @@ public class ICMode : ICommand {
             foreach (UserMode um; user.getModes()) toSend ~= um;
             u.sendLine(":" ~ u.getIRC().getHost() ~ " MODE " ~ user.getNick() ~ " " ~ toSend);
         }
+    }
+
+    public class ModeException : Exception {
+        private LineType lt;
+        private string message;
+
+        public this(LineType lt, string message) {
+            super(message);
+            this.lt = lt, this.message = message;
+        }
+
+        public LineType getLineType() {
+            return this.lt;
+        }
+
+        public string getMessage() {
+            return this.message;
+        }
+    }
+
+    public void validate(Channel c, Mode m) {
+        auto mode = m.getMode();
+        if (mode == ChanMode.ChannelOperator && !c.hasUser(m.getParam())) throw new ModeException(LineType.ErrNoSuchNick, "User not in channel");
     }
 
 }
