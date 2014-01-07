@@ -165,12 +165,14 @@ public class Channel {
     }
 
     public void partUser(User u, string message) {
+        // TODO: Decide if part reason should be kept for anonymous channels
         sendLineAll(":" ~ u.getHostmask() ~ " PART " ~ getName() ~ " :" ~ message);
         removeUser(u);
     }
 
     public void quitUser(User u, string message) {
-        if (this.hasMode(ChanMode.Anonymous)) sendLineAll(":anonymous!anonymous@anonymous PART:%s".format(message));
+        // TODO: Decide if quit reason should be kept for anonymous channels
+        if (this.hasMode(ChanMode.Anonymous)) sendLineAll(":anonymous!anonymous@anonymous PART %s :%s".format(getName(), message));
         else sendLineAll(":%s QUIT :%s".format(u.getHostmask(), message));
         removeUser(u);
     }
