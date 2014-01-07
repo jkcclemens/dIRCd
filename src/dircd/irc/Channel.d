@@ -21,7 +21,6 @@ public class Channel {
     public this(IRC irc, string name) {
         this.irc = irc;
         this.name = name;
-        if (name == "#anon") modes ~= new Mode(ChanMode.Anonymous);
     }
 
     public Mode[] getModes() {
