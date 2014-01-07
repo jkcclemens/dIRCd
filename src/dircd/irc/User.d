@@ -129,6 +129,17 @@ public class User {
     }
 
     public void setNick(string newNick) {
+        auto line = ":%s NICK :%s".format(this.getHostmask(), newNick);
+        User[string] sent;
+        this.sendLine(line);
+        foreach (Channel c; this.getChannels()) {
+            if (c.hasMode(ChanMode.Anonymous)) continue; // don't tell people in anon channels
+            foreach (User u; c.getUsers()) {
+                if (u.getNick() in sent || u.getNick() == this.getNick()) continue; // don't need to notify twice
+                u.sendLine(line);
+                sent[u.getNick()] = u;
+            }
+        }
         this.nick = newNick;
     }
 

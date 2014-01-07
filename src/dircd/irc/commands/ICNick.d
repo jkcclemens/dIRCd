@@ -28,7 +28,6 @@ public class ICNick : ICommand {
         }
         bool firstSet = u.getNick() is null;
         u.setNick(newNick);
-        u.sendLine(":" ~ u.getHostmask() ~ " NICK :" ~ newNick);
         if (firstSet && u.isRegistered()) u.sendWelcome();
     }
 
