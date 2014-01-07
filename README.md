@@ -45,7 +45,7 @@ included in this server. However, many things still work.
 
 - ISON (RFC)
 - JOIN (RFC)
-- MODE (RFC) - reading modes, currently; setting is not yet supported
+- MODE (RFC) - reading modes (chan & user), setting modes (chan only, currently)
 - NAMES on channels (RFC)
 - NICK (RFC)
 - PART (RFC)
