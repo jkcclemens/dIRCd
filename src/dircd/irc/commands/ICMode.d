@@ -75,7 +75,6 @@ public class ICMode : ICommand {
                 ChanMode cm = cast(ChanMode) to!string(c);*/
                 return; // not supported
             }
-            return;
         }
         auto user = u.getIRC().getUser(target);
         if (user is null) return; // error?

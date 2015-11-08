@@ -263,10 +263,10 @@ public class User {
                 continue;
             }
             auto command = line["command"].toUpper();
-            if (!this.isRegistered() && (command != "CAP" && command != "PONG" && command != "USER" && command != "NICK")) continue;
             if (this.irc.getPass() !is null && !this.correctPass) {
                 if (command != "PASS" && command != "PONG" && command != "CAP") continue;
             }
+            if (!this.isRegistered() && (command != "CAP" && command != "PONG" && command != "USER" && command != "NICK")) continue;
             auto ic = this.irc.getCommandHandler().getCommand(command);
             if (ic is null) {
                 sendLine(this.irc.generateLine(this, LineType.ErrUnknownCommand, command ~ " :Unknown command"));
